@@ -38,25 +38,20 @@ class Tools {
         vector.scaleInPlace(maxLength / currentLength);
     }
 
-    getUpVector(_mesh, refresh) {
-        _mesh.computeWorldMatrix(true, refresh);
-        var up_local = new Vector3(0, 1, 0);
-        const worldMatrix = _mesh.getWorldMatrix();
-        return Vector3.TransformNormal(up_local, worldMatrix);
+    getUpVector(_mesh) {
+        let up_local = _mesh.getDirection(Vector3.UpReadOnly);
+        return up_local.normalize();
     }
 
-    getForwardVector(_mesh, refresh) {
-        _mesh.computeWorldMatrix(true, refresh);
-        var forward_local = new Vector3(0, 0, 1);
-        const worldMatrix = _mesh.getWorldMatrix();
-        return Vector3.TransformNormal(forward_local, worldMatrix).normalize();
+    getForwardVector(_mesh) {
+        let forward_local = _mesh.getDirection(Vector3.LeftHandedForwardReadOnly);
+        return forward_local.normalize();
     }
 
-    getRightVector(_mesh, refresh) {
-        _mesh.computeWorldMatrix(true, refresh);
-        var right_local = new Vector3(1, 0, 0);
-        const worldMatrix = _mesh.getWorldMatrix();
-        return Vector3.TransformNormal(right_local, worldMatrix).normalize();
+    getRightVector(_mesh) {
+       
+        let right_local = _mesh.getDirection(Vector3.RightReadOnly);
+        return right_local.normalize();
     }
     
     

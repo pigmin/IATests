@@ -1,4 +1,4 @@
-import { Color3, Engine, FreeCamera,  Light, PointLight, Scene, ScenePerformancePriority, Vector3 } from "@babylonjs/core";
+import { Color3, CubeTexture, DirectionalLight, Engine, FreeCamera,  Light, PointLight, Scene, ScenePerformancePriority, ShadowGenerator, Vector3 } from "@babylonjs/core";
 import { Inspector } from "@babylonjs/inspector";
 import { HavokPlugin } from '@babylonjs/core/Physics/v2/Plugins/havokPlugin';
 import HavokPhysics from "@babylonjs/havok";
@@ -96,13 +96,13 @@ class Game {
            
             switch (GlobalManager.gameState) {
                 case States.STATE_MENU:
-                    //GlobalManager.gameState = States.STATE_START_GAME;
+                    //TODO menu
+                    GlobalManager.gameState = States.STATE_START_GAME;
                     break;
                 case States.STATE_START_GAME:
                     Engine.audioEngine.unlock();
                     SoundManager.playMusic(SoundManager.Musics.GAME_MUSIC);
-                    GlobalManager.menuUI.show(false);
-                    GlobalManager.gameUI.show(true);
+
 
                     GlobalManager.gameState = States.STATE_LEVEL_READY;
                     break;
@@ -171,14 +171,15 @@ class Game {
         GlobalManager.scene.ambientColor = new Color3(0.9, 0.9, 1);
 
         // This creates and positions a free camera (non-mesh)
-        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(0, 15, 0), GlobalManager.scene);
-        GlobalManager.gameCamera.setTarget(0, 0, 0);
+        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(7, 145, 0), GlobalManager.scene);
+        GlobalManager.gameCamera.setTarget(new Vector3(0, 0, 0));
+        
         GlobalManager.gameCamera.ellipsoid = new Vector3(1.5, 2, 1.5);
 
         GlobalManager.gameCamera.wheelPrecision = 0.5; //Mouse wheel speed
         GlobalManager.gameCamera.attachControl(this.canvas, true);
-        GlobalManager.gameCamera.inputs.attached.pointers.angularSensibilityX = 1.5;
-        GlobalManager.gameCamera.inputs.attached.pointers.angularSensibilityY = 2.0;
+        GlobalManager.gameCamera.angularSensibility = 3000;
+        GlobalManager.gameCamera.angularSensibility = 3000;
 
 
         GlobalManager.debugCamera = new FreeCamera("debugCam", new Vector3(0, 8, -10), GlobalManager.scene);

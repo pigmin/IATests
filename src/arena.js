@@ -63,6 +63,10 @@ class Arena {
 
     }
 
+    drawLevel() {
+        
+    }
+
     disposeLevel() {
         this.assetContainer.removeAllFromScene();
     }

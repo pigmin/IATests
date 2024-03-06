@@ -1,7 +1,7 @@
 import { AssetsManager, Sound } from '@babylonjs/core';
 import { GlobalManager } from './globalmanager';
 
-import music1Url from "../assets/musics/ethereal-dreams-cinematic-10331.mp3";
+import music1Url from "../assets/musics/Fluffing-a-Duck(chosic.com).mp3";
 
 
 class SoundManager {

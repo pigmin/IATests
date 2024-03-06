@@ -2,6 +2,8 @@ import { AxesViewer, Color3, MeshBuilder, Quaternion, Scalar, Scene, SceneLoader
 import { GlobalManager } from './globalmanager';
 
 import playerMeshUrl from "../assets/models/vehicule_tout_terrain_low_poly.glb";
+import { InputController } from './inputcontroller';
+import { Tools } from './tools';
 
 const SPEED = 15.0;
 const TURN_SPEED = 4*Math.PI;
@@ -16,6 +18,7 @@ class Player {
     spawnPoint;
 
     //Vecteur d'input
+    moveContext;
     moveInput = new Vector3(0, 0, 0);
 
     //Vecteur de deplacement
@@ -64,38 +67,39 @@ class Player {
         //Mesh "Object_11" => Roues
     }
 
-    update(inputMap, actions) {
+    update() {
 
-        this.getInputs(inputMap, actions);
+        this.inputMove();
 
         this.applyCameraToInputs();
         this.move();
     }
 
-    getInputs(inputMap, actions) {
+    inputMove() {
 
-        this.moveInput.set(0, 0, 0);
+        this.moveContext = InputController.getAxisVectorP1();
 
-        if (inputMap["KeyA"]) {
-            this.moveInput.x = -1;
-        }
-        else if (inputMap["KeyD"]) {
-            this.moveInput.x = 1;
-        }
+        this.bRun = false;
 
-        
-        if (inputMap["KeyW"]) {
-            this.moveInput.z = 1;
+        if (Math.abs(this.moveContext.length()) < 0.01) {
+            this.moveInput.setAll(0);
         }
-        else if (inputMap["KeyS"]) {
-            this.moveInput.z = -1;
+        else {
+            this.moveInput.x = this.moveContext.x;
+            this.moveInput.y = 0;
+            this.moveInput.z = this.moveContext.y;
+            this.bWalking = true;
+            this.bRun = InputController.inputMap["ShiftLeft"];
         }
 
-        if (actions["Space"]) {
-            //TODO jump
-        }
+        this.bRunning = this.bRun;
+        if (this.bRunning)
+            this.bWalking = false;
+
+        this.moveInput.normalize();
 
     }
+
 
     applyCameraToInputs() {
         
@@ -104,13 +108,13 @@ class Player {
         if (this.moveInput.length() != 0) {
 
             //Recup le forward de la camera
-            let forward = this.getForwardVector(GlobalManager.camera);
+            let forward = Tools.getForwardVector(GlobalManager.gameCamera);
             forward.y = 0;
             forward.normalize();
             forward.scaleInPlace(this.moveInput.z);
 
             //Recup le right de la camera
-            let right = this.getRightVector(GlobalManager.camera);
+            let right = Tools.getRightVector(GlobalManager.gameCamera);
             right.y = 0;
             right.normalize();
             right.scaleInPlace(this.moveInput.x);
