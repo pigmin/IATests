@@ -31,11 +31,6 @@ class Player {
     }
 
     async init() {
-        /*this.mesh = MeshBuilder.CreateBox('playerMesh', {size: 2});
-        this.mesh.material = new StandardMaterial("playerMat", GlobalManager.scene);
-        this.mesh.material.diffuseColor = new Color3(1, 0, 0);
-        this.mesh.visibility = 0.6;*/
-
         this.transform = new TransformNode("player", GlobalManager.scene);
         this.transform.position = this.spawnPoint.clone();
 
@@ -58,13 +53,6 @@ class Player {
             }
         }
 
-        const poignee = this.mesh.getChildTransformNodes().find( (node) => node.name === 'Object_2');
-        let childObj = MeshBuilder.CreateBox("childObj", GlobalManager.scene);
-        childObj.setParent(poignee);
-        childObj.position.set(0, 0, 0);
-        childObj.scaling.set(1, 1, 1)
-
-        //Mesh "Object_11" => Roues
     }
 
     update() {
