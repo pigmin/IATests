@@ -52,6 +52,7 @@ class Arena {
                 //Objet 3D
                 childMesh.receiveShadows = true;
                 GlobalManager.addShadowCaster(childMesh);
+                childMesh.checkCollisions = true;
             }
             else {
                 //RAS

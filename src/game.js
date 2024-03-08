@@ -172,8 +172,11 @@ class Game {
        
         GlobalManager.scene = new Scene(GlobalManager.engine);
         GlobalManager.scene.clearColor = new Color3(0, 0, 0);
+        //Pour les collisions internes de babylonjs :
         GlobalManager.scene.collisionsEnabled = true;
-
+        const assumedFramesPerSecond = 60;
+        GlobalManager.scene.gravity = new Vector3(0, GlobalManager.gravityVector / assumedFramesPerSecond, 0);
+        
         GlobalManager.scene.ambientColor = new Color3(0.9, 0.9, 1);
 
         // This creates and positions a free camera (non-mesh)
