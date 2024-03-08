@@ -171,7 +171,7 @@ class Game {
         GlobalManager.scene.ambientColor = new Color3(0.9, 0.9, 1);
 
         // This creates and positions a free camera (non-mesh)
-        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(7, 145, 0), GlobalManager.scene);
+        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(7, 252, 0), GlobalManager.scene);
         GlobalManager.gameCamera.setTarget(new Vector3(0, 0, 0));
         
         GlobalManager.gameCamera.ellipsoid = new Vector3(1.5, 2, 1.5);
