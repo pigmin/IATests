@@ -57,11 +57,7 @@ class Player {
 
 
         for (let childMesh of result.meshes) {
-            if ((childMesh.name === "Object_3") ||
-                (childMesh.name === "Object_5") ||
-                (childMesh.name === "Object_4") ||
-                (childMesh.name === "Object_11")) {
-
+            if (childMesh.getTotalVertices() > 0) {
                 childMesh.receiveShadows = true;
                 GlobalManager.addShadowCaster(childMesh);
             }
@@ -73,7 +69,6 @@ class Player {
         this.mesh.ellipsoidOffset = new Vector3(0, offsetY, 0);
 
         if (DEBUG_COLLISIONS) {
-
 
             //Create Visible Ellipsoid around player  ( https://playground.babylonjs.com/#0NESCY#2 )
             const a = this.mesh.ellipsoid.x;
@@ -121,13 +116,8 @@ class Player {
             this.moveInput.z = this.moveContext.y;
             this.bWalking = true;
         }
-
-
-
         this.moveInput.normalize();
-
     }
-
 
     applyCameraToInputs() {
 
@@ -168,11 +158,10 @@ class Player {
             this.moveDirection.scaleInPlace(SPEED * GlobalManager.deltaTime);
 
             if (!this.bWasWalking)
-                this.walkAnim.start(true, 2.0, this.walkAnim.from, this.walkAnim.to, false);      
+                this.walkAnim.start(true, 2.0, this.walkAnim.from, this.walkAnim.to, false);
 
         }
-        else {
-            
+        else {            
             if (this.bWasWalking)
                 this.walkAnim.stop();
         }

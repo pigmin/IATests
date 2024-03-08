@@ -126,7 +126,7 @@ class Game {
                 this.arena.loadLevel(levels[this.currentLevel]).then( () => {
                     this.player.respawn(this.arena.getSpawnPoint());
                     GlobalManager.engine.hideLoadingUI();
-                })
+                });
 
             }
 

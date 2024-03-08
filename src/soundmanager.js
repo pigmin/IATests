@@ -67,7 +67,7 @@ class SoundManager {
           assetsManager.onFinish = (tasks) => {
             console.log("tasks successful", tasks);
     
-            this.musics[this.Musics.GAME_MUSIC] = new Sound("music1", music1Data.data, GlobalManager.scene, undefined, { loop: true, autoplay: false, volume: 0.4 });
+            this.musics[this.Musics.GAME_MUSIC] = new Sound("music1", music1Data.data, GlobalManager.scene, undefined, { loop: true, autoplay: false, volume: 0.05 });
     
             //this.soundsFX[this.SoundsFX.WHISTLE] = new Sound("whistle", whistleSoundData.data, GlobalManager.scene);
     
