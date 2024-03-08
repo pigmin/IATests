@@ -73,7 +73,7 @@ class GlobalManager {
         this.deltaTime = this.engine.getDeltaTime() / 1000.0;
     }
 
-addLight(light) {
+    addLight(light) {
         this.lights.push(light);
     }
     addShadowGenerator(shadowGen) {

@@ -21,7 +21,7 @@ class Tools {
         this.engine = engine;
     }
 
-    update(delta) {
+    update() {
 
     }
 

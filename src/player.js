@@ -26,13 +26,19 @@ class Player {
 
     lookDirectionQuaternion = Quaternion.Identity();
 
-    constructor(spawnPoint) {
+    constructor() {
+    }
+    
+    respawn(spawnPoint) {
         this.spawnPoint = spawnPoint;
+        this.transform.position.copyFrom(this.spawnPoint);
+        this.mesh.rotationQuaternion = Quaternion.Identity();
+        this.moveDirection.setAll(0);
     }
 
     async init() {
         this.transform = new TransformNode("player", GlobalManager.scene);
-        this.transform.position = this.spawnPoint.clone();
+        this.transform.position.setAll(0);
 
         const result = await SceneLoader.ImportMeshAsync("", "", playerMeshUrl, GlobalManager.scene);
         //Attention mesh sans vertices !!
@@ -128,22 +134,6 @@ class Player {
             this.moveDirection.scaleInPlace(SPEED * GlobalManager.deltaTime);            
             this.transform.position.addInPlace(this.moveDirection);
         }
-    }
-
-    getUpVector(_mesh) {
-        let up_local = _mesh.getDirection(Vector3.UpReadOnly);
-        return up_local.normalize();
-    }
-
-    getForwardVector(_mesh) {
-        let forward_local = _mesh.getDirection(Vector3.LeftHandedForwardReadOnly);
-        return forward_local.normalize();
-    }
-
-    getRightVector(_mesh) {
-       
-        let right_local = _mesh.getDirection(Vector3.RightReadOnly);
-        return right_local.normalize();
     }
 }
 

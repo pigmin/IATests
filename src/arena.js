@@ -9,7 +9,7 @@ class Arena {
 
     mesh;
 
-    playerSpawnPoint;
+    playerSpawnPoint = Vector3.Zero();
 
     assetContainer = null;
 
@@ -32,8 +32,7 @@ class Arena {
         for (let aNode of this.assetContainer.transformNodes) {
             if (aNode.name.includes("SPAWN_P")) {
                 //Player start 
-                aNode.computeWorldMatrix(true);
-                this.playerSpawnPoint = aNode.getAbsolutePosition();
+                this.playerSpawnPoint.copyFrom(aNode.getAbsolutePosition());
                 aNode.dispose();
             }
         }

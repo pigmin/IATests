@@ -72,8 +72,9 @@ class Game {
         await this.arena.init();
         await this.arena.loadLevel(levels[this.currentLevel]);
 
-        this.player = new Player(this.arena.getSpawnPoint());
+        this.player = new Player();
         await this.player.init();
+        this.player.respawn(this.arena.getSpawnPoint());
 
 
         GlobalManager.engine.hideLoadingUI();
@@ -111,6 +112,9 @@ class Game {
                     break;
 
                 case States.STATE_RUNNING:
+                    this.update();
+                    break;
+
                 default:
                     this.update();
             }
@@ -121,8 +125,10 @@ class Game {
                     this.currentLevel = 0;
 
                 GlobalManager.engine.displayLoadingUI();
-                this.arena.loadLevel(levels[this.currentLevel]);
-                GlobalManager.engine.hideLoadingUI();
+                this.arena.loadLevel(levels[this.currentLevel]).then( () => {
+                    this.player.respawn(this.arena.getSpawnPoint());
+                    GlobalManager.engine.hideLoadingUI();
+                })
 
             }
 
@@ -146,7 +152,7 @@ class Game {
             }
             //Reset actions
             InputController.resetActions();
-            //divFps.innerHTML = this.engine.getFps().toFixed() + " fps";
+            divFps.innerHTML = GlobalManager.engine.getFps().toFixed() + " fps";
             GlobalManager.scene.render();
         });
     }
@@ -171,7 +177,7 @@ class Game {
         GlobalManager.scene.ambientColor = new Color3(0.9, 0.9, 1);
 
         // This creates and positions a free camera (non-mesh)
-        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(7, 252, 0), GlobalManager.scene);
+        GlobalManager.gameCamera = new FreeCamera("gameCamera", new Vector3(120, 174, -5), GlobalManager.scene);
         GlobalManager.gameCamera.setTarget(new Vector3(0, 0, 0));
         
         GlobalManager.gameCamera.ellipsoid = new Vector3(1.5, 2, 1.5);
