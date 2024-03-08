@@ -9,6 +9,8 @@ class Arena {
 
     assetContainer = null;
 
+    exitMesh = null;
+
     constructor() {
     }
 
@@ -17,6 +19,8 @@ class Arena {
     }
 
     async loadLevel(level) {
+
+        this.exitMesh = null;
 
         if (this.assetContainer != null)
             this.disposeLevel();
@@ -46,19 +50,19 @@ class Arena {
 
             if (childMesh.getTotalVertices() > 0) {
                 //Objet 3D
-                childMesh.receiveShadows = true;
-                GlobalManager.addShadowCaster(childMesh);
+
                 if (extras) {
                     if (extras.collisions)
                         childMesh.checkCollisions = true;
 
                     if (extras.exit) {
-                        childMesh.onCollideObservable.add(
-                            function(mesh, evt){
-                                let msg = "Collision with: "+mesh.name;
-                                console.log(msg);
-                            }
-                        );   
+                        childMesh.checkCollisions = false;
+                        childMesh.visibility = 0.0; 
+                        this.exitMesh = childMesh;
+                    }
+                    else {
+                        childMesh.receiveShadows = true;
+                        GlobalManager.addShadowCaster(childMesh);
                     }
                 }                 
             }
@@ -79,8 +83,12 @@ class Arena {
         this.assetContainer.removeAllFromScene();
     }
 
-    getSpawnPoint(playerIndex) {
+    getSpawnPoint() {
         return this.playerSpawnPoint.clone();
+    }
+
+    getExitMesh() {
+        return this.exitMesh;
     }
 
     update() {

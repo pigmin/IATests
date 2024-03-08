@@ -72,7 +72,7 @@ class Game {
 
         this.player = new Player();
         await this.player.init();
-        this.player.respawn(this.arena.getSpawnPoint());
+        this.player.respawn(this.arena.getSpawnPoint(), this.arena.getExitMesh());
 
 
         GlobalManager.engine.hideLoadingUI();
@@ -109,6 +109,23 @@ class Game {
                     GlobalManager.gameState = States.STATE_RUNNING;
                     break;
 
+                case States.STATE_NEW_LEVEL: 
+                    break;
+
+                case States.STATE_EXITED: 
+                    this.currentLevel++;
+                    if (this.currentLevel >= levels.length)
+                        this.currentLevel = 0;
+
+                    GlobalManager.gameState = States.STATE_NEW_LEVEL;
+                    GlobalManager.engine.displayLoadingUI();
+                    this.arena.loadLevel(levels[this.currentLevel]).then( () => {
+                        this.player.respawn(this.arena.getSpawnPoint(), this.arena.getExitMesh());
+                        GlobalManager.engine.hideLoadingUI();
+                        GlobalManager.gameState = States.STATE_LEVEL_READY;
+                    });
+                    break;
+
                 case States.STATE_RUNNING:
                     this.update();
                     break;
@@ -124,7 +141,7 @@ class Game {
 
                 GlobalManager.engine.displayLoadingUI();
                 this.arena.loadLevel(levels[this.currentLevel]).then( () => {
-                    this.player.respawn(this.arena.getSpawnPoint());
+                    this.player.respawn(this.arena.getSpawnPoint(), this.arena.getExitMesh());
                     GlobalManager.engine.hideLoadingUI();
                 });
 

@@ -1,5 +1,5 @@
 import { Color3, MeshBuilder, Quaternion, SceneLoader, Vector3 } from '@babylonjs/core';
-import { GlobalManager } from './globalmanager';
+import { GlobalManager, States } from './globalmanager';
 import { InputController } from './inputcontroller';
 import { Tools } from './tools';
 
@@ -8,7 +8,7 @@ import playerMeshUrl from "../assets/models/girl_pacman_animated.glb";
 const SPEED = 20.0;
 const TURN_SPEED = 6 * Math.PI;
 
-const DEBUG_COLLISIONS = false;
+const DEBUG_COLLISIONS = true;
 class Player {
 
     transform;
@@ -17,6 +17,7 @@ class Player {
     axes;
 
     spawnPoint;
+    exitMesh;
 
     //Vecteur d'input
     moveContext;
@@ -36,8 +37,10 @@ class Player {
     constructor() {
     }
 
-    respawn(spawnPoint) {
+    respawn(spawnPoint, exitMesh) {
         this.spawnPoint = spawnPoint;
+        this.exitMesh = exitMesh;
+
         this.mesh.position.copyFrom(this.spawnPoint);
         this.mesh.rotationQuaternion = Quaternion.Identity();
         this.moveDirection.setAll(0);
@@ -98,6 +101,17 @@ class Player {
 
         this.applyCameraToInputs();
         this.move();
+
+        this.checkCollisions();
+    }
+
+    checkCollisions() {
+        if (this.exitMesh) {
+            if (this.mesh.intersectsMesh(this.exitMesh, false)) {
+                console.log("EXIT !!!");
+                GlobalManager.gameState = States.STATE_EXITED;
+            }
+        }
     }
 
     inputMove() {
@@ -172,8 +186,10 @@ class Player {
         //Collisions ?
         let collidedMesh = this.mesh.collider ? this.mesh.collider.collidedMesh : null;
         if (collidedMesh) {
-            console.log(collidedMesh);
+        //    console.log(collidedMesh.name);
         }
+
+
 
     }
 }
