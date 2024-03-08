@@ -1,6 +1,5 @@
 
 import { Vector3 } from '@babylonjs/core';
-import { SoundManager } from "./soundmanager";
 
 export const States = Object.freeze({
     STATE_NONE: 0,

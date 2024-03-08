@@ -1,7 +1,5 @@
-import { Color3, CubeTexture, DirectionalLight, Engine, FreeCamera,  Light, PointLight, Scene, ScenePerformancePriority, ShadowGenerator, Vector3 } from "@babylonjs/core";
+import { Color3, CubeTexture, DirectionalLight, Engine, FreeCamera,  Scene, ShadowGenerator, Vector3 } from "@babylonjs/core";
 import { Inspector } from "@babylonjs/inspector";
-import { HavokPlugin } from '@babylonjs/core/Physics/v2/Plugins/havokPlugin';
-import HavokPhysics from "@babylonjs/havok";
 
 
 import Player from './player';

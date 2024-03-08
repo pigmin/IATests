@@ -1,8 +1,4 @@
-import { MeshBuilder, SceneLoader, Vector3 } from '@babylonjs/core';
-import { GridMaterial } from '@babylonjs/materials';
-
-
-
+import { SceneLoader, Vector3 } from '@babylonjs/core';
 import { GlobalManager } from './globalmanager';
 
 class Arena {
@@ -39,20 +35,32 @@ class Arena {
 
         for (let childMesh of this.assetContainer.meshes) {
 
+            let extras = null;
             if (childMesh.metadata && childMesh.metadata.gltf && childMesh.metadata.gltf.extras) {
-                let extras = childMesh.metadata.gltf.extras;
+                extras = childMesh.metadata.gltf.extras;
                 //Recup les datas supp.
 
                 console.log(extras);
             }
 
 
-
             if (childMesh.getTotalVertices() > 0) {
                 //Objet 3D
                 childMesh.receiveShadows = true;
                 GlobalManager.addShadowCaster(childMesh);
-                childMesh.checkCollisions = true;
+                if (extras) {
+                    if (extras.collisions)
+                        childMesh.checkCollisions = true;
+
+                    if (extras.exit) {
+                        childMesh.onCollideObservable.add(
+                            function(mesh, evt){
+                                let msg = "Collision with: "+mesh.name;
+                                console.log(msg);
+                            }
+                        );   
+                    }
+                }                 
             }
             else {
                 //RAS
